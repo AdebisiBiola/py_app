@@ -1,0 +1,52 @@
+version: "3.1"
+
+services: 
+
+  # python:
+  #   image: pythonic/app:1
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   depends_on:
+  #     - mysql
+  #   ports:
+  #     - 400:9090
+     
+  # mysql:
+  #   image: mysql:5.7
+  #   restart: always
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: password
+  #     MYSQL_DATABASE: excel_db
+  #     MYSQL_USER: root
+  #     MYSQL_HOST: mysql
+
+
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      DATABASE: excel_db
+      USER: root
+      PASSWORD: password
+      HOST: mysql
+    depends_on:
+      - db
+    command: python patan.py
+    restart: always
+    ports:
+      - 400:9090
+
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: excel_db
+      MYSQL_USER: root
+      MYSQL_PASSWORD: password
+    restart: always
+    ports:
+      - 3306:3306
+
+      
